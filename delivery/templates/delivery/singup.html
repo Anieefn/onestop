@@ -6,7 +6,8 @@
     <title>Document</title>
 </head>
 <body>
-    <form method="post" action="{% url 'handle_singup' %}">
+    <form method="post" action="{% url 'login_singup' %}">
+        {% csrf_token %}
         <fieldset>
             <legend>
                 Details
@@ -16,11 +17,18 @@
             <label>Email: </label>
             <input type="email" name="email" placeholder="Enter your email" required><br>
             <label>Phone Number: </label>
-            <input type="text" name="phonenumber" placeholder="Enter your phone Number" required>
+            <input type="text" name="phonenumber" placeholder="Enter your phone Number" required><br>
             <label>password: </label>
-            <input type="password" name="password" placeholder="Enter your password" required>
-            <button type="submit">submit</button>
+            <input type="password" name="password" placeholder="Enter your password" required><br>
+            <label>Address: </label>
+            <textarea name="address" required placeholder="Enter your address"></textarea><br>
+            <select name="role"><option value="customer">customer</option></select><br>
         </fieldset>
+        <button type="submit">submit</button>
+
+        {% if error_message %}
+        <p style="color: red;">{{ error_message }}</p>
+        {% endif %}
     </form>
 </body>
 </html>

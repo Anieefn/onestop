@@ -16,7 +16,7 @@
             <input type="password" name="password" placeholder="Enter the password" required><br>
             <button type="submit">submit</button>
         </fieldset>
-        <a href="handle_singup">New user?</a>
+        <a href="{% url 'handle_singup' %}">New user?</a>
         {% if error_message %}
         <p style="color: red;">{{ error_message }}</p>
         {% endif %}
