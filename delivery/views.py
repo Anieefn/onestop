@@ -11,13 +11,18 @@ def handle_login(request):
             try:
                 user = Register.objects.get(username=username)
                 if check_password(password, user.password):
-                    print('Checking hassed password')
-                    return render(request, 'delivery/store.html')
-            except Register.DoesNotExist:
-                error_message = "Invalid username or password"
+                    if user.role == "customer":
+                         return render(request,'delivery/home.html')
+                    else:
+                         return render(request, 'delivery/store.html')
+                else:
+                     error_message = "Invalid username or password"
+                     return render(request, 'delivery/login.html', {"error_message":error_message})
+            except Register.DoesNotExist as e:
+                print(e)
+                error_message = "user Not exists"
                 return render(request, 'delivery/login.html', {"error_message":error_message})
-    else:
-           return render(request, 'delivery/login.html')
+    return render(request, 'delivery/login.html')
 
 def singup(request):
      return render(request, 'delivery/singup.html')
@@ -43,4 +48,4 @@ def handle_singup(request):
              print(e)
              error_message = "An unexpected erroe occured. please try again"
              return render(request, 'delivery/singup.html', {"error_message" : error_message})
-    return render(request, 'delivery/store.html')
+    return render(request, 'delivery/singup.html')
