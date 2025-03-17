@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>login</title>
+</head>
+<body>
+    <form method="post" action="{% url 'handle_login' %}">
+        {% csrf_token %}
+        <fieldset>
+            <legend>Login</legend>
+            <label>Name: </label>
+            <input type="text" name="username" placeholder="Enter the username" required><br>
+            <label>Password: </label>
+            <input type="password" name="password" placeholder="Enter the password" required><br>
+            <button type="submit">submit</button>
+        </fieldset>
+        <a href="handle_singup">New user?</a>
+        {% if error_message %}
+        <p style="color: red;">{{ error_message }}</p>
+        {% endif %}
+    </form>
+</body>
+</html>
