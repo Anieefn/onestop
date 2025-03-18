@@ -13,7 +13,6 @@ class Register(models.Model):
         return self.username
 
 class Posts(models.Model):
-    user = models.ForeignKey(Register, on_delete=models.CASCADE)
     name = models.CharField(max_length=22)
     bio = models.CharField(max_length=90)
     img = models.URLField()

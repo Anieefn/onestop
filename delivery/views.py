@@ -1,6 +1,6 @@
 from django.db import IntegrityError
 from django.shortcuts import render
-from .models import Register
+from .models import Register,Posts
 from django.contrib.auth.hashers import make_password,check_password
 # Create your views here.
 
@@ -49,3 +49,20 @@ def handle_singup(request):
              error_message = "An unexpected erroe occured. please try again"
              return render(request, 'delivery/singup.html', {"error_message" : error_message})
     return render(request, 'delivery/singup.html')
+
+def add_post(request):
+     if request.method == 'POST':
+          name = request.POST.get('name')
+          bio = request.POST.get('bio')
+          img = request.POST.get('img')
+          price = request.POST.get('price')
+          catagery = request.POST.get('catagery')
+          discount = request.POST.get('discount')
+          print("Data at backenf")
+          post = Posts(name = name, bio = bio, img = img, price = price, catagery = catagery, discount = discount)
+          post.save()
+          print("Data saved")
+          posts = Posts.objects.all()
+          posts.get_discount_price()
+          print("discount price")
+     return render(request, 'delivery/store.html', {"posts":posts})
