@@ -63,6 +63,8 @@ def add_post(request):
           post.save()
           print("Data saved")
           posts = Posts.objects.all()
-          posts.get_discount_price()
-          print("discount price")
+          print("Data saved")
+          for post in posts:
+             post.discounted_price = post.get_discount_price()  # Attach discounted price to each post object
+          print("discount price calculated")
      return render(request, 'delivery/store.html', {"posts":posts})

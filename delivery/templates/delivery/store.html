@@ -6,8 +6,50 @@
     <title>store Management</title>
 </head>
 <body>
-    <form>
-        
+    <form method="post" action="{% url 'add_post' %}">
+        {% csrf_token %}
+        <label>Name: </label>
+        <input type="text" name="name" required placeholder="Enter the product name">
+        <label>Discription: </label>
+        <input type="text" name="bio" required placeholder="Enter about your probuct">
+        <label>Image url: </label>
+        <input type="url" name="img" required placeholder="Enter your image url">
+        <label>Price: </label>
+        <input type="text" name="price" required placeholder="Enter the price">
+        <label>Discount: </label>
+        <input type="text" name="discount" required placeholder="If there is no discount enter 0">
+        <select name="catagery">select catagery
+            <option value="shirt">Shirt</option>
+            <option value="pants">Pants</option>
+            <option value="accessories">Accessories</option>
+        </select>
+        <button type="submit"> submit</button>
     </form>
+    <table border="1">
+        <tr>
+            <th>Id</th>
+            <th>Product Name</th>
+            <th>Image</th>
+            <th>bio</th>
+            <th>Product price</th>
+            <th>Discount</th>
+            <th>Catagery</th>
+            <th>Final price</th>
+            <th>Update/Delete</th>
+        </tr>
+        {% for p in posts%}
+        <tr>
+          <td>{{p.id}}</td>
+          <td>{{p.name}}</td>
+          <td> <img src="{{p.img}}" alt="{{p.name}}" height="100px" width="150px">
+          <td>{{p.bio}}</td>
+          <td>{{p.price}}</td>
+          <td>{{p.discount}}</td>
+          <td>{{p.catagery}}</td>
+          <td>{{p.discounted_price}}</td>
+          <td><a href="#">update</a> <a href="#">Delete</a></td>
+        </tr>
+        {% endfor %}
+    </table>
 </body>
 </html>

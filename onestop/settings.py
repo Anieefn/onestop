@@ -77,7 +77,7 @@ WSGI_APPLICATION = 'onestop.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'onestop',
+        'NAME': 'onestop2',
         'USER': 'root',
         'PASSWORD': 'root',
         'PORT': 3306,

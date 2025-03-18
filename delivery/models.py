@@ -8,14 +8,15 @@ class Register(models.Model):
     address = models.CharField(max_length=150)
     phonenumber = models.CharField(max_length=10,unique=True)
     role = models.CharField(max_length= 9,default='customer')
-
+    
     def __str__(self):
         return self.username
 
 class Posts(models.Model):
+    userId = models.ForeignKey(Register, on_delete= models.CASCADE)
     name = models.CharField(max_length=22)
     bio = models.CharField(max_length=90)
-    img = models.URLField()
+    img = models.URLField(max_length=300)
     price = models.FloatField()
     catagery = models.CharField(max_length=13, default='shirts')
     discount = models.IntegerField()
