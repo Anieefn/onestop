@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    {% load static %}
 </head>
 <body>
     <form method="post" action="{% url 'login_singup' %}">
@@ -13,22 +14,24 @@
                 Details
             </legend>
             <label>Name: </label>
-            <input type="text" name="username" placeholder="Enter your name" required><br>
+            <input type="text" id="name" name="username" placeholder="Enter your name" required><br>
             <label>Email: </label>
-            <input type="email" name="email" placeholder="Enter your email" required><br>
+            <input type="email" id="email" name="email" placeholder="Enter your email" required><br>
             <label>Phone Number: </label>
-            <input type="text" name="phonenumber" placeholder="Enter your phone Number" required><br>
+            <input type="text" id="phone" name="phonenumber" placeholder="Enter your phone Number" required><br>
             <label>password: </label>
-            <input type="password" name="password" placeholder="Enter your password" required><br>
+            <input type="password" id="password" name="password" placeholder="Enter your password" required><br>
             <label>Address: </label>
-            <textarea name="address" required placeholder="Enter your address"></textarea><br>
+            <textarea id="address" name="address" required placeholder="Enter your address"></textarea><br>
             <select name="role"><option value="customer">customer</option></select><br>
         </fieldset>
-        <button type="submit">submit</button>
+        <button type="submit" onclick="valid(event)">submit</button>
 
         {% if error_message %}
         <p style="color: red;">{{ error_message }}</p>
         {% endif %}
+        <link>
     </form>
+    <script src="{% static 'delivery/validation.js' %}"></script>
 </body>
 </html>
