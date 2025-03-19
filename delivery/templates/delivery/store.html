@@ -6,14 +6,14 @@
     <title>store Management</title>
 </head>
 <body>
-    <form method="post" action="{% url 'add_post' %}">
+    <form method="post" action="{% url 'stock_view' p.id %}">
         {% csrf_token %}
         <label>Name: </label>
         <input type="text" name="name" required placeholder="Enter the product name">
         <label>Discription: </label>
         <input type="text" name="bio" required placeholder="Enter about your probuct">
         <label>Image url: </label>
-        <input type="url" name="img" required placeholder="Enter your image url">
+        <input type="url" name="picture" required placeholder="Enter your image url">
         <label>Price: </label>
         <input type="text" name="price" required placeholder="Enter the price">
         <label>Discount: </label>
@@ -37,19 +37,20 @@
             <th>Final price</th>
             <th>Update/Delete</th>
         </tr>
-        {% for p in posts%}
+        {% for p in post%}
         <tr>
           <td>{{p.id}}</td>
           <td>{{p.name}}</td>
-          <td> <img src="{{p.img}}" alt="{{p.name}}" height="100px" width="150px">
+          <td> <img src="{{p.picture.Url}}" alt="{{p.name}}" height="100px" width="150px">
           <td>{{p.bio}}</td>
           <td>{{p.price}}</td>
           <td>{{p.discount}}</td>
           <td>{{p.catagery}}</td>
-          <td>{{p.discounted_price}}</td>
+          <td>{{p.discount_price}}</td>
           <td><a href="#">update</a> <a href="#">Delete</a></td>
         </tr>
         {% endfor %}
     </table>
+
 </body>
 </html>

@@ -7,7 +7,7 @@
     {% load static %}
 </head>
 <body>
-    <form method="post" action="{% url 'login_singup' %}">
+    <form method="post" action="{% url 'handle_singup'%}">
         {% csrf_token %}
         <fieldset>
             <legend>

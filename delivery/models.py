@@ -16,14 +16,14 @@ class Posts(models.Model):
     userId = models.ForeignKey(Register, on_delete= models.CASCADE)
     name = models.CharField(max_length=22)
     bio = models.CharField(max_length=90)
-    img = models.URLField(max_length=300)
+    picture = models.URLField(max_length=300)
     price = models.FloatField()
     catagery = models.CharField(max_length=13, default='shirts')
     discount = models.IntegerField()
+    discount_price = models.FloatField(null=True, blank=True)
 
-    def get_discount_price(self):
-        return self.price - (self.price*self.discount /100)
-
+    def __str__(self):
+        return self.name
 
 
 class Cart(models.Model):

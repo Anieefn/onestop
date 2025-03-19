@@ -1,5 +1,5 @@
 from django.db import IntegrityError
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render,redirect
 from .models import Register,Posts
 from django.contrib.auth.hashers import make_password,check_password
 # Create your views here.
@@ -14,7 +14,8 @@ def handle_login(request):
                     if user.role == "customer":
                          return render(request,'delivery/home.html')
                     else:
-                         return render(request, 'delivery/store.html')
+                         print("to stock")
+                         return redirect('stock_view', userid=user.id)
                 else:
                      error_message = "Invalid username or password"
                      return render(request, 'delivery/login.html', {"error_message":error_message})
@@ -42,7 +43,9 @@ def handle_singup(request):
             hashed_password = make_password(password)
            # print("password hassed", hashed_password)
             reg = Register(username = username, password = hashed_password, email = email, address = address, phonenumber = phonenumber, role = role)
+            print("saving")
             reg.save()
+            print("saved")
             return render(request,'delivery/login.html')
     except IntegrityError as e:
              print(e)
@@ -50,21 +53,23 @@ def handle_singup(request):
              return render(request, 'delivery/singup.html', {"error_message" : error_message})
     return render(request, 'delivery/singup.html')
 
-def add_post(request):
+def stock_view(request, userid):
+     print("in stock")
+     p = get_object_or_404(Register, id=userid)
+     print(p)
      if request.method == 'POST':
           name = request.POST.get('name')
           bio = request.POST.get('bio')
-          img = request.POST.get('img')
+          picture = request.POST.get('picture')
           price = request.POST.get('price')
-          catagery = request.POST.get('catagery')
           discount = request.POST.get('discount')
-          print("Data at backenf")
-          post = Posts(name = name, bio = bio, img = img, price = price, catagery = catagery, discount = discount)
+          catagery = request.POST.get('catagery')
+          print('saving data')
+          discount_price = price - (price * discount / 100)
+          print(discount_price)
+          post = Posts(name = name, bio = bio, picture = picture, price = price, discount = discount, catagery = catagery, discount_price = discount_price,userId = p)
           post.save()
-          print("Data saved")
-          posts = Posts.objects.all()
-          print("Data saved")
-          for post in posts:
-             post.discounted_price = post.get_discount_price()  # Attach discounted price to each post object
-          print("discount price calculated")
-     return render(request, 'delivery/store.html', {"posts":posts})
+          print('saved')
+     post = Posts.objects.filter(userId = p)
+     print(post)
+     return render(request, 'delivery/store.html',{'post':post, 'p':p})
