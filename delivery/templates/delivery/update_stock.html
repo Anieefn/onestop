@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>updating</title>
+    {% load static %}
+    <script src="{% static 'delivery/de.js' %}"></script>
+</head>
+<body>
+    <form method="post">
+        {% csrf_token %}
+        {% for p in post%}
+        <label>Name: </label>
+        <input type="text" name="name" required value="{{p.name}}">
+        <label>Discription: </label>
+        <input type="text" name="bio" required value="{{p.bio}}">
+        <label>Image url: </label>
+        <input type="url" name="picture" required value="{{p.picture}}">
+        <label>Price: </label>
+        <input type="text" name="price" required value="{{p.price}}">
+        <label>Discount: </label>
+        <input type="text" name="discount" required value="{{p.discount}}">
+        <select name="catagery" >select catagery
+            <option value="shirt">Shirt</option>
+            <option value="pants">Pants</option>
+            <option value="accessories">Accessories</option>
+        </select>
+        <button type="submit" onclick="avoid_default(event)"> submit</button>
+    </form>
+    {% endfor %}
+</body>
+</html>

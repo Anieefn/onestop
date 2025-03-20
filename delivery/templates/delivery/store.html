@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>store Management</title>
+    {% load static %}
+    <script src="{% static 'delivery/de.js' %}"></script>
 </head>
 <body>
     <form method="post" action="{% url 'stock_view' p.id %}">
@@ -23,8 +25,11 @@
             <option value="pants">Pants</option>
             <option value="accessories">Accessories</option>
         </select>
-        <button type="submit"> submit</button>
+        <button type="submit" onclick="avoid_default(event)"> submit</button>
     </form>
+    {% if error_message %}
+    <p style="color: red;">{{ error_message }}</p>
+    {% endif %}
     <table border="1">
         <tr>
             <th>Id</th>
@@ -41,13 +46,15 @@
         <tr>
           <td>{{p.id}}</td>
           <td>{{p.name}}</td>
-          <td> <img src="{{p.picture.Url}}" alt="{{p.name}}" height="100px" width="150px">
+          <td> <img src="{{p.picture}}" alt="{{p.name}}" width="100">
           <td>{{p.bio}}</td>
           <td>{{p.price}}</td>
           <td>{{p.discount}}</td>
           <td>{{p.catagery}}</td>
           <td>{{p.discount_price}}</td>
-          <td><a href="#">update</a> <a href="#">Delete</a></td>
+          <td><a href="{% url 'update_stock' userid=p.userId.id pid=p.id %}">Update</a>
+            <a href="{% url 'delete_user' userid=p.userId.id pid=p.id %}">Delete</a>
+          </td>
         </tr>
         {% endfor %}
     </table>

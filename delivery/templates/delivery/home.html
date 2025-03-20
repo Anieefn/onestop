@@ -1,1 +1,29 @@
-<h1>customer home page</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>home</title>
+</head>
+<body>
+    <header style="color: aquamarine;">
+        <h1>Header</h1>
+    </header>
+    <h1>Customer home page</h1>
+    {% for p in post %}
+    <div>
+        <img src="{{p.picture}}" alt="{{p.name}}" width="100">
+        <p>{{p.name}}</p>
+        <p>{{p.bio}}</p>
+        <p>{{p.catagery}}</p>
+        <p style="text-decoration: line-through; color: rgb(218, 118, 118);">{{p.price}}</p>
+        <p style="color: skyblue;">-{{p.discount}}%</p>
+        <p> {{p.discount_price}}</p>
+        <a href="#">Add cart</a>
+    </div>
+    {% endfor %}
+    <footer style="color: rgb(230, 128, 56);">
+        <h1>footer</h1>
+    </footer>
+</body>
+</html>
