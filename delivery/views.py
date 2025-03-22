@@ -1,8 +1,11 @@
 from django.contrib import messages
 from django.db import IntegrityError
 from django.shortcuts import get_object_or_404, render,redirect
+import razorpay
 from .models import Register,Posts,Cart
 from django.contrib.auth.hashers import make_password,check_password
+from django.conf import settings
+
 # Create your views here.
 #login page
 def handle_login(request):
@@ -153,3 +156,43 @@ def add_to_cart(request, item_id, userid):
      customer.saved_posts.add(item)
      messages.success(request, f"{item.name} added to your cart!")
      return redirect('home', userid = customer.id)
+
+def orders(request, userid):
+     p = get_object_or_404(Register, id = userid)
+     print("in order",p)
+     print(type(p))
+     o = Cart.objects.filter(customer= p).first()
+     print(o)
+     item = o.items.all() if o else []
+     total_price = o.total_price() if o else 0
+     return render(request,'delivery/cart.html',{'item':item, 'total_price':total_price, 'p':p})
+
+def checkout(request, userid):
+     p = get_object_or_404(Register, id = userid)
+     cart = Cart.objects.filter(customer = p).first()
+     cart_items= cart.items.all() if cart else []
+     total_price = cart.total_price() if cart else 0
+
+     if total_price == 0:
+          return render(request,'delivery/checkout.html',{'error':'your cart is empty!'})
+     
+     client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
+
+     order_data = {
+          'amount':int(total_price * 100),
+          'currency':'INR',
+          'payment_capture':'1'
+     }
+
+     order = client.order.create(data = order_data)
+
+     return render(request, 'delivery/checkout.html',{
+          'p' :p.id,
+          'cart_items':cart_items,
+          'total_price':total_price,
+          'razorpay_key_id':settings.RAZORPAY_KEY_ID,
+          'order_id':order['id'],
+          'amount':total_price
+     })
+          
+     

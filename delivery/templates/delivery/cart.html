@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'delivery/style.css' %}">
+</head>
+<body>
+    <div  class="cart-container">
+        {% if item %}
+        <div class="cart-cards-wrapper">
+            {% for p in item %}
+            <div class="cart-post-container">
+                <img src="{{p.picture}}" alt="{{p.name}}">
+                <div>
+                    <p><strong>Name:</strong> {{p.name}}</p>
+                    <p><strong>Bio:</strong> {{p.bio}}</p>
+                    <p><strong>Price:</strong> ₹{{p.discount_price}}</p>
+                </div>
+
+            </div>
+            {% endfor %}
+            <h3 class="total-price" >Total Price: $ {{ total_price }}</h3>
+            
+        </div>
+        <a href="{% url 'home' p.id %}"   class="back-home">Back to home</a>
+        {% else %}
+        <p class="empty-message">Your cart is empty!</p>
+        <a href="{% url 'home' p.id %}"  class="back-home">Back to home</a>
+        {% endif %}
+    </div>
+</body>
+</html>

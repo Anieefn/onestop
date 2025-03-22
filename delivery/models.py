@@ -32,8 +32,8 @@ class Cart(models.Model):
     items = models.ManyToManyField("Posts", related_name="cart")
 
     def total_price(self):
-        return sum(item.price for item in self.items.all())
+        return sum(item.discount_price for item in self.items.all())
     
     def __str__(self):
-        return f"{self.customer.username} {self.total_price}"
+        return f"{self.customer.username}"
     

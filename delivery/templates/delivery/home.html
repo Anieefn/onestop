@@ -11,7 +11,7 @@
     <header>
             <!-- Profile Link -->
             <a href="{% url 'update_cus' u.id %}" class="nav-link">Profile</a>
-            <a href="#">orders</a>
+            <a href="{% url 'orders' u.id %}">orders</a>
         <nav>
             <!-- Home Link -->
                 <a href="{% url 'home' u.id %}" {% if not selected_category %}style="font-weight: bold;"{% endif %}>Home</a>
