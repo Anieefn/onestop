@@ -8,9 +8,10 @@ class Register(models.Model):
     address = models.CharField(max_length=150)
     phonenumber = models.CharField(max_length=10,unique=True)
     role = models.CharField(max_length= 9,default='customer')
+    saved_posts = models.ManyToManyField("Posts", related_name="saved_users", blank=True)
     
     def __str__(self):
-        return self.username
+        return str(self.id)
 
 class Posts(models.Model):
     userId = models.ForeignKey(Register, on_delete= models.CASCADE)

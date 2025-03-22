@@ -3,27 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>home</title>
+    <title>Product Grid</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'delivery/style.css' %}">
 </head>
 <body>
-    <header style="color: aquamarine;">
-        <h1>Header</h1>
+    <header>
+            <!-- Profile Link -->
+            <a href="{% url 'update_cus' u.id %}" class="nav-link">Profile</a>
+            <a href="#">orders</a>
+        <nav>
+            <!-- Home Link -->
+                <a href="{% url 'home' u.id %}" {% if not selected_category %}style="font-weight: bold;"{% endif %}>Home</a>
+                <a href="{% url 'home_by_category' u.id 'shirt' %}" {% if selected_category == 'shirts' %}style="font-weight: bold; color: blue;"{% endif %}>Shirts</a>
+                <a href="{% url 'home_by_category' u.id 'pants' %}" {% if selected_category == 'pants' %}style="font-weight: bold; color: blue;"{% endif %}>Pants</a>
+                <a href="{% url 'home_by_category' u.id 'accessories' %}" {% if selected_category == 'accessories' %}style="font-weight: bold; color: blue;"{% endif %}>Accessories</a>  
+        </nav>
     </header>
-    <h1>Customer home page</h1>
-    {% for p in post %}
-    <div>
-        <img src="{{p.picture}}" alt="{{p.name}}" width="100">
-        <p>{{p.name}}</p>
-        <p>{{p.bio}}</p>
-        <p>{{p.catagery}}</p>
-        <p style="text-decoration: line-through; color: rgb(218, 118, 118);">{{p.price}}</p>
-        <p style="color: skyblue;">-{{p.discount}}%</p>
-        <p> {{p.discount_price}}</p>
-        <a href="#">Add cart</a>
+    
+    <h1>Customer Home Page</h1>
+    <div class="cards-wrapper">
+        {% for p in post %}
+        <div class="post-container">
+            <img src="{{p.picture}}" alt="{{p.name}}">
+            <div>
+                <p><strong>Name:</strong> {{p.name}}</p>
+                <p><strong>Bio:</strong> {{p.bio}}</p>
+                <p><strong>Category:</strong> {{p.catagery}}</p>
+                <p id="price"><strong>Price:</strong> ₹{{p.price}}</p>
+                <p><strong>Discount:</strong> -{{p.discount}}%</p>
+                <p><strong>Discounted Price:</strong> ₹{{p.discount_price}}</p>
+                <form method="post" action="{% url 'add_to_cart' p.id u.id %}">
+                    {% csrf_token %}
+                    <button type="submit">add to cart</button>
+                </form>
+            </div>
+        </div>
+        {% endfor %}
     </div>
-    {% endfor %}
-    <footer style="color: rgb(230, 128, 56);">
-        <h1>footer</h1>
+    <footer>
+        <h1>Footer</h1>
     </footer>
 </body>
 </html>

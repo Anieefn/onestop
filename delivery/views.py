@@ -1,6 +1,7 @@
+from django.contrib import messages
 from django.db import IntegrityError
 from django.shortcuts import get_object_or_404, render,redirect
-from .models import Register,Posts
+from .models import Register,Posts,Cart
 from django.contrib.auth.hashers import make_password,check_password
 # Create your views here.
 #login page
@@ -13,7 +14,9 @@ def handle_login(request):
                 if check_password(password, user.password):
                     if user.role == "customer":
                          print("To home")
-                         return redirect('home')
+                         print(user.id)
+                         return redirect('home', userid=user.id)
+                         
                     else:
                          return redirect('stock_view', userid=user.id)
                 else:
@@ -108,7 +111,45 @@ def delete_user(request, pid, userid):
 
 #####################################  admin  #######################################################################
 
-def home(request):
+def home(request, userid, category_name = None):
      print("In Home")
-     post = Posts.objects.all()
-     return render(request, 'delivery/home.html', {'post':post})
+     if category_name:
+          post = Posts.objects.filter(catagery = category_name)
+     else:
+          post = Posts.objects.all()
+     u = Register.objects.filter(id = userid).first()
+     c = Posts.objects.values_list('catagery', flat=True).distinct()
+     print(u)
+     return render(request, 'delivery/home.html', {'post':post , 'u':u,'c':c, 'category_name':category_name})
+
+def update_cus(request, userid) :
+      print("In update")
+      u = get_object_or_404(Register, id = userid)
+      p = Register.objects.filter(id = userid).first()
+      print(p)
+      print(u)
+      if request.method == 'POST':
+           u.username = request.POST.get('username')
+           u.email = request.POST.get('email')
+           u.address = request.POST.get('address')
+           u.phonenumber = request.POST.get('phonenumber')
+           print("saving")
+           u.save()
+           print("Saved")
+           print("to home")
+           return redirect('home',p)
+      print("to profile")
+      details = Register.objects.filter(username=u.username)
+      return render(request,'delivery/update_cus.html',{"details":details, 'u':u})
+
+def add_to_cart(request, item_id, userid):
+     customer = get_object_or_404(Register, id = userid)
+     item = get_object_or_404(Posts, id=item_id)
+     print(customer)
+     print(item)
+     cart,created = Cart.objects.get_or_create(customer = customer)
+
+     cart.items.add(item)
+     customer.saved_posts.add(item)
+     messages.success(request, f"{item.name} added to your cart!")
+     return redirect('home', userid = customer.id)

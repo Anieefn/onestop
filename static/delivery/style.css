@@ -1,0 +1,110 @@
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color:  #e8f0f2; /* Light blue-gray background */
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Ensure the footer doesn’t overlap content */
+}
+
+/* Header Styling */
+header {
+    background-color: #2c3e50; /* Blue header */
+    color: white;
+    text-align: center;
+    padding: 1.5rem 0;
+    font-size: 1.5rem;
+    font-weight: bold;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+/* Main Content Styling */
+h1 {
+    text-align: center;
+    color: #212529; /* Charcoal gray text color */
+    margin: 1rem 0;
+}
+
+/* Cards Wrapper Styling */
+.cards-wrapper {
+    display: flex;
+    flex-wrap: wrap; /* Allows wrapping to the next row if screen size reduces */
+    justify-content: space-between; /* Even spacing between cards */
+    gap: 1.5rem; /* Consistent spacing between cards */
+    margin: 2rem auto;
+    max-width: 1200px; /* Limits the total width of the grid */
+    flex-grow: 1; /* Ensures cards take up remaining space above footer */
+}
+
+/* Individual Card Styling */
+.post-container {
+    background-color: #ffffff; /* White background for cards */
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 1rem;
+    width: calc(25% - 1.5rem); /* Fits 4 cards per row with spacing */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.post-container img {
+    width: 100%; /* Image takes full width of the card */
+    border-radius: 5px;
+    object-fit: cover; /* Ensures image fits neatly */
+    margin-bottom: 1rem;
+}
+
+.post-container:hover {
+    transform: translateY(-10px); /* Subtle lift on hover */
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Text Content Styling */
+.post-container div {
+    display: flex;
+    flex-direction: column; /* Content stacked vertically inside cards */
+    justify-content: flex-start;
+    text-align: left; /* Aligns text to the left */
+}
+
+.post-container p {
+    margin: 0.5rem 0;
+    color: #212529; /* Charcoal gray for readability */
+    font-size: 1rem;
+}
+
+/* Button Styling */
+.post-container a {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background-color: #007BFF; /* Blue button color */
+    color: white;
+    text-decoration: none;
+    border-radius: 3px;
+    text-align: center;
+    margin-top: 0.5rem;
+    font-weight: bold;
+}
+
+.post-container a:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+
+/* Footer Styling */
+footer {
+    background-color: #2c3e50; /* Matches header color */
+    color: white;
+    text-align: center;
+    padding: 1rem 0;
+    position: relative; /* Makes sure footer doesn't overlap content */
+    bottom: 0;
+    width: 100%;
+}
+#price {
+    text-decoration: line-through;
+    color:skyblue;
+}
