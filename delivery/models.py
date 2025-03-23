@@ -29,11 +29,11 @@ class Posts(models.Model):
 
 class Cart(models.Model):
     customer = models.ForeignKey(Register, on_delete=models.CASCADE, related_name="cart")
-    items = models.ManyToManyField("Posts", related_name="cart")
+    items = models.ManyToManyField(Posts, related_name="cart")
 
     def total_price(self):
         return sum(item.discount_price for item in self.items.all())
     
     def __str__(self):
-        return f"{self.customer.username}"
+        return str(self.customer.id)
     

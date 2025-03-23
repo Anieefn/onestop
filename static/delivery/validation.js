@@ -19,12 +19,6 @@ function valid(event){
         return;
     }
 
-   
-
-    if (!numregex.test(InputphoValue)) {
-        alert("Please enter a valid number. It should not start with 0 and must be 10 digits long.");
-        return;
-    }
     if (!InputemailValue) {
         alert("Enter the username");
         return;

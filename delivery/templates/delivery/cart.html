@@ -25,6 +25,11 @@
             <h3 class="total-price" >Total Price: $ {{ total_price }}</h3>
             
         </div>
+        
+        <form method="get" action="{% url 'checkout' p.id %}">
+            <button type="submit">Proceed to Checkout</button>
+        </form>
+
         <a href="{% url 'home' p.id %}"   class="back-home">Back to home</a>
         {% else %}
         <p class="empty-message">Your cart is empty!</p>

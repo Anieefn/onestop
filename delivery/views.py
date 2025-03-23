@@ -168,31 +168,57 @@ def orders(request, userid):
      return render(request,'delivery/cart.html',{'item':item, 'total_price':total_price, 'p':p})
 
 def checkout(request, userid):
-     p = get_object_or_404(Register, id = userid)
-     cart = Cart.objects.filter(customer = p).first()
+     customer = get_object_or_404(Register, id=userid)
+     cart = Cart.objects.filter(customer = customer).first()
      cart_items= cart.items.all() if cart else []
      total_price = cart.total_price() if cart else 0
-
+     print("In payment")
+     print(customer)
+     print(cart)
+     print(total_price)
      if total_price == 0:
           return render(request,'delivery/checkout.html',{'error':'your cart is empty!'})
-     
-     client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
-
-     order_data = {
+     try:
+       client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
+       order_data = {
           'amount':int(total_price * 100),
           'currency':'INR',
-          'payment_capture':'1'
+          'payment_capture':'1',
      }
-
-     order = client.order.create(data = order_data)
+       order = client.order.create(data=order_data)
+     except Exception as e:
+          print(e)
+          return render(request, 'delivery/checkout.html', {'error': f"Error creating order: {str(e)}"})
 
      return render(request, 'delivery/checkout.html',{
-          'p' :p.id,
+          'userid' :userid,
           'cart_items':cart_items,
           'total_price':total_price,
           'razorpay_key_id':settings.RAZORPAY_KEY_ID,
           'order_id':order['id'],
-          'amount':total_price
+          'amount':total_price,
      })
-          
+
+def orderss(request, userid):
+    customer = get_object_or_404(Register, id=userid)
+    cart = Cart.objects.filter(customer=customer).first()
+    print("In orderss")
+    print(userid)
+    print(customer)
+    print(cart)
+    # Fetch cart items and total price before clearing the cart
+    cart_items = cart.items.all() if cart else []
+    total_price = cart.total_price() if cart else 0
+    print(total_price, cart_items)
+    # Clear the cart after fetching its details
+    if cart:
+        cart.items.clear()
+        cart.save()
+
+    return render(request, 'delivery/orders.html', {
+        'userid': userid,
+        'customer': customer,
+        'cart_items': cart_items,
+        'total_price': total_price,
+    })    
      
