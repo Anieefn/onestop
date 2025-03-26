@@ -12,7 +12,7 @@ class Register(models.Model):
     role = models.CharField(max_length= 9,default='customer')
     saved_posts = models.ManyToManyField("Posts", related_name="saved_users", blank=True)
     def __str__(self):
-        return f"{self.id}, {self.email}"
+        return f"{self.id}"
 
 class Posts(models.Model):
     userId = models.ForeignKey(Register, on_delete= models.CASCADE)
@@ -26,7 +26,6 @@ class Posts(models.Model):
 
     def __str__(self):
         return self.name
-
 
 class Cart(models.Model):
     customer = models.ForeignKey(Register, on_delete=models.CASCADE, related_name="cart")
@@ -44,4 +43,4 @@ class Otp(models.Model):
     otp_created_at = models.DateTimeField(auto_now_add=True)
 
     def is_otp_vaild(self):
-        return now() <= self.otp_created_at + timedelta(minutes=3)    
+        return now() <= self.otp_created_at + timedelta(minutes=3)  

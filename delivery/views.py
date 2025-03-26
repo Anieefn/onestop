@@ -125,27 +125,32 @@ def update_cus(request, userid) :
            u.address = request.POST.get('address')
            u. phonenumber = request.POST.get('phonenumber')
            u.save()
-           return redirect('home',p)
+           return redirect('home',p.id)
       details = Register.objects.filter(id = userid).filter()
       return render(request,'delivery/update_cus.html',{"details":details})
- 
+
 def add_to_cart(request, item_id, userid):
      customer = get_object_or_404(Register, id = userid)
      item = get_object_or_404(Posts, id=item_id)
+     print(customer)
+     print(item)
      cart,created = Cart.objects.get_or_create(customer = customer)
 
      cart.items.add(item)
      customer.saved_posts.add(item)
      messages.success(request, f"{item.name} added to your cart!")
      return redirect('home', userid = customer.id)
- 
+
 def orders(request, userid):
      p = get_object_or_404(Register, id = userid)
+     print("in order",p)
+     print(type(p))
      o = Cart.objects.filter(customer= p).first()
+     print(o)
      item = o.items.all() if o else []
      total_price = o.total_price() if o else 0
      return render(request,'delivery/cart.html',{'item':item, 'total_price':total_price, 'p':p})
- 
+
 def checkout(request, userid):
      p = get_object_or_404(Register, id=userid)
      cart = Cart.objects.filter(customer = p).first()
@@ -162,6 +167,7 @@ def checkout(request, userid):
      }
        order = client.order.create(data=order_data)
      except Exception as e:
+          print(e)
           return render(request, 'delivery/checkout.html', {'error': f"Error creating order: {str(e)}"})
 
      return render(request, 'delivery/checkout.html',{
@@ -172,37 +178,34 @@ def checkout(request, userid):
           'order_id':order['id'],
           'amount':total_price,
      })
- 
+
 def orderss(request, userid):
     p = get_object_or_404(Register, id=userid)
     cart = Cart.objects.filter(customer=p).first()
-    cart_items = cart.items.all() if cart else []
-    total_price = cart.total_price() if cart else 0
-    # Fetch cart items and total price before clearing the cart
-    # Clear the cart after fetching its details
+
     if cart:
+        cart_items = cart.items.all()
+        total_price = cart.total_price()
+
+        # Send email confirmation
         subject = "Your Order Summary"
-        message = f"Hello {p.username},\n\nHere are your order details:\n"
-        message += "\n".join([f"{item.name}" for item in cart_items])
-        message += f"\n\nTotal Price: {total_price}\n\nThank you for your order!"
+        message = f"Hello {p.username},\n\nHere are your order details:\n" + \
+                  "\n".join([f"{item.name})" for item in cart_items]) + \
+                  f"\n\nTotal Price: {total_price}\n\nThank you for your order!"
         recipient = p.email
-        
+
         send_mail(
-            subject,
-            message,
-            'anieefn@gmail.com',
-            [recipient],
-            fail_silently=False,
+            subject, message, 'anieefn@gmail.com', [recipient], fail_silently=False,
         )
 
-        cart.items.clear()
-        cart.save()
+        # Clear the cart
+        cart.items.all().delete()
 
     return render(request, 'delivery/orders.html', {
         'p': p,
         'cart_items': cart_items,
         'total_price': total_price,
-    })    
+    })
 ################################################## user ###################################################
 
 def otp(request):
@@ -251,3 +254,7 @@ def verify_otp_and_reset_password(request):
         else:
             return render(request, "delivery/enter_otp.html", {"user_id": user.id, "email": user.email, "error": "Invalid OTP."})
     return redirect("send_otp")
+
+####################################### order conformation and rest password ########################################################################################
+
+

@@ -18,9 +18,6 @@
     
         <p>Your order will be delivered to this location shortly. Thank you for choosing Onestop!</p>
         <a href="{% url 'home' p.id %}"  class="back-home">Back to home</a>
-        {% if cart_items %}
-        <a href="{% url 'home' p.id %}"  class="back-home">Back to home</a>
-        {% endif %}
     </div>
     
 </body>

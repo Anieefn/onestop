@@ -4,3 +4,4 @@ from .models import Register,Posts,Cart
 admin.site.register(Register)
 admin.site.register(Posts)
 admin.site.register(Cart)
+
