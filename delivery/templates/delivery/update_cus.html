@@ -3,9 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>update</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'delivery/update.css' %}">
 </head>
 <body>
+    <header>
+        <nav class="navbar">
+            <div class="nav-logo">
+                <img src="{% static 'delivery/logo.png' %}" alt="NB Logo" class="logo">
+            </div>    
+        </nav>
+    </header>
     <h1>Updating</h1>
     <form method="post">
         {% csrf_token %}
@@ -21,5 +30,15 @@
         <button type="submit">submit</button>
         {% endfor %}
     </form>
+    <footer class="footer">
+        <div class="footer-content">
+            <p>© 2025 My Store | Designed with ❤️ by Your Team And NB</p>
+            <ul class="footer-links">
+                <li><a href="#">Privacy Policy</a></li>
+                <li><a href="#">Terms of Service</a></li>
+                <li><a href="#">Contact Us</a></li>
+            </ul>
+        </div>
+    </footer>  
 </body>
 </html>

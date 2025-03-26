@@ -4,8 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>login</title>
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'delivery/login.css' %}">
 </head>
 <body>
+    <div class="login-container">
+        <img src="{% static 'delivery/logo.png' %}" alt="Logo" class="login-logo"> <!-- Add your logo here -->
+
+    
     <form method="post" action="{% url 'handle_login' %}">
         {% csrf_token %}
         <fieldset>
@@ -17,9 +23,11 @@
             <button type="submit">submit</button>
         </fieldset>
         <a href="{% url 'handle_singup' %}">New user?</a>
+        <a href="{% url 'send_otp' %}">password?</a>
         {% if error_message %}
-        <p style="color: red;">{{ error_message }}</p>
+            <p style="color: red;">{{ error_message }}</p>
         {% endif %}
     </form>
+</div>
 </body>
 </html>

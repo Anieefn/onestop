@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>checkout</title>
     {% load static %}
-    <link rel="stylesheet" type="text/css" href="{% static 'delivery/pay.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'delivery/checkout.css' %}">
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 </head>
 <body>
@@ -16,7 +16,7 @@
     <div  class="cart-container">
         {% for i in cart_items %}
         <div class="cart-item">
-            <img src="{{i.picture}}" alt="{{p.name}}">
+            <img src="{{i.picture}}" alt="{{i.name}}">
             <p>{{i.name}}</p>
             <p>{{ i.discount_price}}</p>
         </div>
@@ -38,12 +38,12 @@
             "handler": function (response) {
                 alert("Payment Successful!");
                 // Redirect to the orders page
-                window.location.href = "{% url 'orderss' userid %}";
+                window.location.href = "{% url 'orderss' p.id %}";
             },
             "prefill": {
-                "name": "{{ customer.username }}",
-                "email": "{{ customer.email }}",
-                "contact": "{{ customer.email }}"
+                "name": "{{ p.username }}",
+                "email": "{{ p.email }}",
+                "contact": "{{ p.phonenumber }}"
             },
             "theme": {
                 "color": "#528FF0"

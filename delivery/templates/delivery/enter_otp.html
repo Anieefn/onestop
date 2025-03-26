@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>submit otp</title>
+</head>
+<body>
+    <form method="POST" action="{% url 'verify_otp_and_reset_password' %}">
+        {% csrf_token %}
+        <input type="hidden" name="user_id" value="{{ user_id }}">
+        <label for="otp">Enter OTP:</label>
+        <input type="text" name="otp" maxlength="6" required>
+        <label for="new_password">Enter New Password:</label>
+        <input type="password" name="new_password" required>
+        <button type="submit">Reset Password</button>
+        {% if error %}
+            <p style="color: red;">{{ error }}</p>
+        {% endif %}
+    </form>    
+</body>
+</html>

@@ -1,0 +1,123 @@
+/* General Styling for Login Page */
+body {
+    font-family: 'Poppins', Arial, sans-serif;
+    background: linear-gradient(135deg, #f0f8ff, #ffebcd); /* Gentle gradient background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+}
+
+/* Container Styling */
+.login-container {
+    text-align: center;
+    background: #ffffff; /* White card background */
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Soft shadow for depth */
+}
+
+/* Logo Styling */
+.login-logo {
+    width: 150px; /* Adjust size based on logo dimensions */
+    margin-bottom: 2rem;
+}
+
+/* Fieldset Styling */
+fieldset {
+    border: none;
+    margin: 0;
+}
+
+/* Legend Styling */
+legend {
+    font-size: 1.8rem;
+    color: #333;
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+
+/* Input Styling */
+input {
+    width: 100%;
+    padding: 0.8rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+/* Button Styling */
+button {
+    background: linear-gradient(90deg, #6a11cb, #2575fc);
+    color: #fff;
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    transition: transform 0.3s ease, background 0.3s ease;
+}
+
+button:hover {
+    background: linear-gradient(90deg, #2575fc, #6a11cb);
+    transform: translateY(-2px);
+}
+
+/* New User Link Styling */
+a {
+    display: inline-block;
+    margin-top: 1rem;
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #333;
+}
+
+a:hover {
+    color: #2575fc;
+}
+
+/* Styling for Textarea */
+textarea {
+    width: 100%;
+    padding: 0.8rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+    background: #333; /* Same as inputs */
+    color: #fff; /* Same font color as inputs */
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3); /* Inner shadow for depth */
+    resize: none; /* Disables resize to keep consistency */
+}
+
+/* Styling for Dropdown (Select) */
+select {
+    width: 100%;
+    padding: 0.8rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+    background: #333; /* Same background as inputs */
+    color: #fff; /* Same font color as inputs */
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3); /* Inner shadow for depth */
+    cursor: pointer;
+}
+
+/* Hover and Focus Effects */
+textarea:focus,
+select:focus {
+    outline: none; /* Removes default outline */
+    border-color: #6a11cb; /* Add a vibrant border to match buttons */
+    box-shadow: 0 0 5px #6a11cb; /* Glow effect for focus */
+}
+
+textarea:hover,
+select:hover {
+    border-color: #6a11cb; /* Slightly vibrant border on hover */
+}

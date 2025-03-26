@@ -1,0 +1,109 @@
+/* General Styling */
+body {
+    font-family: 'Poppins', Arial, sans-serif;
+    background: linear-gradient(135deg, #f8fdff, #d8eaff); /* Soft gradient background */
+    color: #333;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+/* Checkout Header Styling */
+h1 {
+    font-size: 2.5rem;
+    color: #ff6b6b; /* Vibrant red for header */
+    margin-bottom: 1.5rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-align: center;
+}
+
+/* Error Message Styling */
+p[style="color: red;"] {
+    font-weight: bold;
+    background: #ffe5e5;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    text-align: center;
+}
+
+/* Cart Container Styling */
+.cart-container {
+    display: flex;
+    flex-wrap: wrap; /* Ensures items wrap neatly */
+    justify-content: center;
+    gap: 1rem;
+    width: 90%;
+    max-width: 1200px;
+    margin-bottom: 2rem;
+}
+
+/* Individual Cart Item Styling */
+.cart-item {
+    background: #ffffff; /* White background for each item */
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    width: calc(33.33% - 1rem); /* Responsive width for 3 items per row */
+    max-width: 300px;
+    padding: 1rem;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.cart-item img {
+    width: 100%; /* Image fills the card width */
+    height: 150px; /* Fixed height for uniformity */
+    object-fit: cover; /* Ensures proper fit */
+    border-radius: 5px;
+    margin-bottom: 1rem;
+}
+
+.cart-item:hover {
+    transform: translateY(-5px); /* Subtle hover lift effect */
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Cart Item Details */
+.cart-item p {
+    font-size: 1rem;
+    color: #333;
+    margin: 0.5rem 0;
+}
+
+.cart-item p:first-of-type {
+    font-weight: bold;
+    color: #007bff; /* Bright blue for item name */
+}
+
+/* Total Price Styling */
+h2 {
+    font-size: 1.8rem;
+    color: #333;
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+/* Pay Button Styling */
+#rzp-button {
+    background: linear-gradient(90deg, #6a11cb, #2575fc); /* Vibrant gradient button */
+    color: #fff;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: background 0.3s ease, transform 0.3s ease;
+}
+
+#rzp-button:hover {
+    background: linear-gradient(90deg, #2575fc, #6a11cb); /* Reverse gradient on hover */
+    transform: translateY(-3px); /* Slight lift effect */
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+}

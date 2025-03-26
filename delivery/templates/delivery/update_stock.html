@@ -5,9 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>updating</title>
     {% load static %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'delivery/admin.css' %}">
     <script src="{% static 'delivery/de.js' %}"></script>
 </head>
 <body>
+    <header>
+        <nav class="navbar">
+            <div class="nav-logo">
+                <img src="{% static 'delivery/logo.png' %}" alt="NB Logo" class="logo">
+            </div>  
+            <div class="nav-right">
+                <a href="{% url 'stock_view' userid=p.id %}" class="nav-link">Home</a>
+            </div>    
+        </nav>
+    </header>
     <form method="post">
         {% csrf_token %}
         {% for p in post%}
@@ -29,5 +41,15 @@
         <button type="submit" onclick="avoid_default(event)"> submit</button>
     </form>
     {% endfor %}
+    <footer class="footer">
+        <div class="footer-content">
+            <p>© 2025 My Store | Designed with ❤️ by Your Team And NB</p>
+            <ul class="footer-links">
+                <li><a href="#">Privacy Policy</a></li>
+                <li><a href="#">Terms of Service</a></li>
+                <li><a href="#">Contact Us</a></li>
+            </ul>
+        </div>
+    </footer> 
 </body>
 </html>

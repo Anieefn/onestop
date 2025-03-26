@@ -5,8 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'delivery/login.css' %}">
 </head>
 <body>
+    <div class="login-container">
+        <img src="{% static 'delivery/logo.png' %}" alt="Logo" class="login-logo"> <!-- Add your logo here -->
+    </div>
     <form method="post" action="{% url 'handle_singup'%}">
         {% csrf_token %}
         <fieldset>
@@ -32,6 +36,7 @@
         {% endif %}
         <link>
     </form>
+    </div>
     <script src="{% static 'delivery/validation.js' %}"></script>
 </body>
 </html>

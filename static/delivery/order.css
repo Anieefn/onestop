@@ -1,0 +1,68 @@
+/* General Styling */
+body {
+    font-family: 'Poppins', Arial, sans-serif;
+    background: linear-gradient(135deg, #f3e5f5, #e8f5e9); /* Soft pastel gradient */
+    color: #333;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Main Container */
+div {
+    background: #ffffff; /* White card background for better focus */
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+    text-align: center;
+    max-width: 500px;
+    width: 90%;
+}
+
+/* Heading Styling */
+h1 {
+    font-size: 2rem;
+    color: #5e35b1; /* Deep purple for title */
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Subheading Styling */
+h2 {
+    font-size: 1.5rem;
+    color: #333; /* Darker text for readability */
+    margin-bottom: 1rem;
+}
+
+/* Paragraph Styling */
+p {
+    font-size: 1rem;
+    color: #555;
+    margin-bottom: 1rem;
+    line-height: 1.5;
+}
+
+/* Back-to-Home Button */
+.back-home {
+    display: inline-block;
+    margin-top: 1.5rem;
+    padding: 0.75rem 1.5rem;
+    background: linear-gradient(90deg, #43a047, #1e88e5); /* Vibrant gradient for button */
+    color: white;
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: bold;
+    border-radius: 25px;
+    transition: background 0.3s ease, transform 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+.back-home:hover {
+    background: linear-gradient(90deg, #1e88e5, #43a047); /* Reverse gradient */
+    transform: translateY(-3px); /* Slight lift effect */
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+}
