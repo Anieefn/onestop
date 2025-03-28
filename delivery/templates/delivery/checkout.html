@@ -14,11 +14,12 @@
     <p style="color: red;">{{error}}</p>
     {% else %}
     <div  class="cart-container">
-        {% for i in cart_items %}
+        {% for s in cart_items %}
         <div class="cart-item">
-            <img src="{{i.picture}}" alt="{{i.name}}">
-            <p>{{i.name}}</p>
-            <p>{{ i.discount_price}}</p>
+            <img src="{{s.item.picture}}" alt="{{s.name}}">
+            <p>{{s.item.name}}</p>
+            <p>{{ s.item.discount_price}}</p>
+            <p>{{ s.quantity}}</p>
         </div>
         {% endfor %}
     </div>

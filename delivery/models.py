@@ -27,15 +27,20 @@ class Posts(models.Model):
     def __str__(self):
         return self.name
 
-class Cart(models.Model):
-    customer = models.ForeignKey(Register, on_delete=models.CASCADE, related_name="cart")
-    items = models.ManyToManyField(Posts, related_name="cart")
+class CartItem(models.Model):
+    cart = models.ForeignKey('Cart', on_delete=models.CASCADE, related_name='cart_items')
+    item = models.ForeignKey(Posts, on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField(default=1)
 
     def total_price(self):
-        return sum(item.discount_price for item in self.items.all())
-    
-    def __str__(self):
-        return str(self.customer.id)
+        return self.item.discount_price * self.quantity
+
+class Cart(models.Model):
+    customer = models.ForeignKey(Register, on_delete=models.CASCADE, related_name="cart")
+    # other fields if needed
+
+    def total_price(self):
+        return sum(cart_item.total_price() for cart_item in self.cart_items.all())
     
 class Otp(models.Model):
     user = models.ForeignKey(Register, on_delete=models.CASCADE, related_name='otp')

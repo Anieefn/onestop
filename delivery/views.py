@@ -2,7 +2,7 @@ from django.contrib import messages
 from django.db import IntegrityError
 from django.shortcuts import get_object_or_404, render,redirect
 import razorpay
-from .models import Register,Posts,Cart,Otp
+from .models import Register,Posts,Cart,Otp,CartItem
 from django.contrib.auth.hashers import make_password,check_password
 from django.conf import settings
 from django.core.mail import send_mail
@@ -130,68 +130,103 @@ def update_cus(request, userid) :
       return render(request,'delivery/update_cus.html',{"details":details})
 
 def add_to_cart(request, item_id, userid):
-     customer = get_object_or_404(Register, id = userid)
-     item = get_object_or_404(Posts, id=item_id)
-     print(customer)
-     print(item)
-     cart,created = Cart.objects.get_or_create(customer = customer)
-
-     cart.items.add(item)
-     customer.saved_posts.add(item)
-     messages.success(request, f"{item.name} added to your cart!")
-     return redirect('home', userid = customer.id)
+     try:
+          customer = get_object_or_404(Register, id = userid)
+          item = get_object_or_404(Posts, id=item_id)
+          quantity = int(request.POST.get('quantity',1))
+          print(customer)
+          print(item)
+          cart,_ = Cart.objects.get_or_create(customer = customer)
+          cart_item, created=CartItem.objects.get_or_create(cart = cart, item = item) 
+          if not created:
+               cart_item.quantity += quantity
+          else:
+               cart_item.quantity = quantity
+          cart_item.save()
+          return redirect('home', userid = customer.id)
+     except IntegrityError as e:
+          print(e)
+          error_message = "Make sure that the product quantity is 3"
+          return redirect('home', userid = customer.id)
+          
 
 def orders(request, userid):
      p = get_object_or_404(Register, id = userid)
-     print("in order",p)
-     print(type(p))
+     #item = get_object_or_404(Posts, id=item_id)
      o = Cart.objects.filter(customer= p).first()
-     print(o)
-     item = o.items.all() if o else []
-     total_price = o.total_price() if o else 0
-     return render(request,'delivery/cart.html',{'item':item, 'total_price':total_price, 'p':p})
+     cart_items = o.cart_items.all() if o else [] 
+     total_price = sum(cart_item.total_price() for cart_item in cart_items)
+     quantity_range = range(1,11)
+     return render(request, 'delivery/cart.html', {
+        'item': cart_items,
+        'total_price': total_price,
+        'p': p,
+        'quantity_range': quantity_range,
+        'userid': userid 
+    })
+
 
 def checkout(request, userid):
-     p = get_object_or_404(Register, id=userid)
-     cart = Cart.objects.filter(customer = p).first()
-     cart_items= cart.items.all() if cart else []
-     total_price = cart.total_price() if cart else 0
-     if total_price == 0:
-          return render(request,'delivery/checkout.html',{'error':'your cart is empty!'})
-     try:
-       client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
-       order_data = {
-          'amount':int(total_price * 100),
-          'currency':'INR',
-          'payment_capture':'1',
-     }
-       order = client.order.create(data=order_data)
-     except Exception as e:
-          print(e)
-          return render(request, 'delivery/checkout.html', {'error': f"Error creating order: {str(e)}"})
+    p = get_object_or_404(Register, id=userid)
+    cart = Cart.objects.filter(customer=p).first()
+    cart_items = cart.cart_items.all() if cart else []
+    total_price = cart.total_price() if cart else 0
+    if total_price == 0:
+        return render(request, 'delivery/checkout.html', {'error': 'Your cart is empty!'})
 
-     return render(request, 'delivery/checkout.html',{
-          'p' :p,
-          'cart_items':cart_items,
-          'total_price':total_price,
-          'razorpay_key_id':settings.RAZORPAY_KEY_ID,
-          'order_id':order['id'],
-          'amount':total_price,
-     })
+    try:
+        # Initialize Razorpay client
+        client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
+        # Create an order on Razorpay
+        order_data = {
+            'amount': int(total_price * 100), 
+            'currency': 'INR',
+            'payment_capture': '1',
+        }
+        order = client.order.create(data=order_data)
+    except Exception as e:
+        print(e) 
+        return render(request, 'delivery/checkout.html', {'error': f"Error creating order: {str(e)}"})
+
+    return render(request, 'delivery/checkout.html', {
+        'p': p,
+        'cart_items': cart_items,
+        'total_price': total_price,
+        'razorpay_key_id': settings.RAZORPAY_KEY_ID,
+        'order_id': order['id'],
+        'amount': total_price,
+    })
 
 def orderss(request, userid):
     p = get_object_or_404(Register, id=userid)
     cart = Cart.objects.filter(customer=p).first()
 
     if cart:
-        cart_items = cart.items.all()
+        cart_items = cart.cart_items.all()
         total_price = cart.total_price()
 
         # Send email confirmation
-        subject = "Your Order Summary"
-        message = f"Hello {p.username},\n\nHere are your order details:\n" + \
-                  "\n".join([f"{item.name})" for item in cart_items]) + \
-                  f"\n\nTotal Price: {total_price}\n\nThank you for your order!"
+        subject = "🎉 Your Order is Confirmed! Here's the Summary 📦"
+        message = f"""
+          Hi {p.username}, 
+
+          Thank you for shopping with us! 🛍️ We're thrilled to have you as our valued customer. Here's a quick overview of your order:
+
+          📝 **Order Details**:
+          {''.join([f"- {item.item.name} x {item.quantity}\n" for item in cart_items])}
+
+          💰 **Total Amount**: ₹{total_price:.2f}
+
+          ✨ Your order is now being prepared and will be on its way to you soon! Keep an eye on your inbox for updates about delivery.  
+
+          If you have any questions, feel free to reply to this email, and we'll be happy to assist.  
+
+          Thanks again for choosing us – we can't wait for you to enjoy your purchase!  
+
+          Warm regards,  
+          **[Your Company Name]**  
+          """
+
         recipient = p.email
 
         send_mail(
@@ -199,7 +234,8 @@ def orderss(request, userid):
         )
 
         # Clear the cart
-        cart.items.all().delete()
+        cart.cart_items.all().delete()
+
 
     return render(request, 'delivery/orders.html', {
         'p': p,
@@ -256,5 +292,22 @@ def verify_otp_and_reset_password(request):
     return redirect("send_otp")
 
 ####################################### order conformation and rest password ########################################################################################
+def increse_quantity(request, cartid):
+     if request.method == 'POST':
+          p = get_object_or_404(CartItem, id = cartid)
+          p.quantity += 1
+          p.save()
+          return redirect('orders', userid=p.cart.customer.id)
+     return redirect('orders', userid=p.cart.customer.id)
 
+def decrese_quantity(request, cartid):
+     if request.method == 'POST':
+          p = get_object_or_404(CartItem, id = cartid)
+          if p.quantity > 1 :
+               p.quantity -= 1
+               p.save()
+          else:
+               p.delete()
+          return redirect('orders', userid=p.cart.customer.id)
+     return redirect('orders', userid=p.cart.customer.id)
 

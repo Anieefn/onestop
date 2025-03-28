@@ -3,37 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Cart</title>
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'delivery/cart.css' %}">
 </head>
 <body>
-    <div  class="cart-container">
+    <div class="cart-container">
+        <header class="header">Cart</header>
         {% if item %}
-        <div class="cart-cards-wrapper">
+        <div class="cart-items">
             {% for p in item %}
-            <div class="cart-post-container">
-                <img src="{{p.picture}}" alt="{{p.name}}">
-                <div>
-                    <p><strong>Name:</strong> {{p.name}}</p>
-                    <p><strong>Bio:</strong> {{p.bio}}</p>
-                    <p><strong>Price:</strong> ₹{{p.discount_price}}</p>
+            <div class="cart-item">
+                <img src="{{ p.item.picture }}" alt="{{ cart_item.item.name }}" class="item-image">
+                <div class="item-details">
+                    <p><strong>Name:</strong> {{ p.item.name }}</p>
+                    <p><strong>Price:</strong> ₹{{ p.item.discount_price }}</p>
+                    <p><strong>Quantity:</strong></p>
+                    <div class="quantity-controls">
+                        <form method="POST" action="{% url 'decrese_quantity' p.id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="decrease-btn">-</button>
+                        </form>
+                        <div class="quantity-display">{{ p.quantity }}</div>
+                        <form method="POST" action="{% url 'increase_quantity' p.id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="increase-btn">+</button>
+                        </form>
+                    </div>
+                    <p><strong>Total Price:</strong> ₹{{ p.total_price }}</p>
                 </div>
-
             </div>
             {% endfor %}
-            <h3 class="total-price" >Total Price: $ {{ total_price }}</h3>
-            
         </div>
-        
-        <form method="get" action="{% url 'checkout' p.id %}">
-            <button type="submit">Proceed to Checkout</button>
-        </form>
-
-        <a href="{% url 'home' p.id %}"   class="back-home">Back to home</a>
+        <div class="cart-summary">
+            <h3>Total Price: ₹{{ total_price }}</h3>
+        </div>
+        <div class="cart-actions">
+            <form method="get" action="{% url 'checkout' p.id %}">
+                <button type="submit" class="checkout-btn">Proceed to Checkout</button>
+            </form>
+            <a href="{% url 'home' p.id %}" class="back-home-btn">Back to Home</a>
+        </div>
         {% else %}
-        <p class="empty-message">Your cart is empty!</p>
-        <a href="{% url 'home' p.id %}"  class="back-home">Back to home</a>
+        <p class="empty-cart">Your cart is empty!</p>
+        <a href="{% url 'home' p.id %}" class="back-home-btn">Back to Home</a>
         {% endif %}
     </div>
 </body>
